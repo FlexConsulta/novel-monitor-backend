@@ -6,7 +6,7 @@ on:
       - "!master"
 jobs:
   deploy:
-    name: Deploy stage
+    name: Deploy development
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,5 +17,5 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: "./"
-          server-dir: "/monitor/backend/dev/"
+          server-dir: "/home/nvusrgitftp/monitor/backend/dev/"
           git-ftp-args: "--changed-only"
