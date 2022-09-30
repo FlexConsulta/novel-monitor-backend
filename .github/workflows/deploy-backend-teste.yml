@@ -5,7 +5,7 @@ on:
       - "homologacao"
 jobs:
   deploy:
-    name: Deploy stage
+    name: Deploy homologacao
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,5 +16,5 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: "./"
-          server-dir: "/monitor/backend/teste"
+          server-dir: "/var/group-apis/monitor/backend/teste/"
           git-ftp-args: "--changed-only"
