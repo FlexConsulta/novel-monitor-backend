@@ -4,7 +4,7 @@ on:
     types: [closed]
 jobs:
   deploy:
-    name: Deploy production
+    name: Deploy producao
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
