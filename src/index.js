@@ -22,7 +22,6 @@ import Resume from "./routes/resume.route";
 const { PORT, HOST } = process.env;
 
 const app = express();
-
 app.use(cors());
 
 app.use(express.json());
