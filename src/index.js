@@ -19,7 +19,9 @@ import authenticate from "./middlewares/authenticate";
 import SendForgotPasswordMail from "./routes/SendForgotPassword.route";
 import Resume from "./routes/resume.route";
 const { PORT, HOST } = process.env;
+
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +39,7 @@ app.use(ViewsDatabaseRoutes);
 app.use(EmailController);
 app.use(ErrorHandling);
 app.use(Resume);
+
 app.listen(PORT, () => {
   console.log(`O servidor está online : [${HOST}:${PORT}]`);
 });
