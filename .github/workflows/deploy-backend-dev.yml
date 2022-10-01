@@ -1,4 +1,4 @@
-name: Deploy stage
+name: Deploy dev
 on:
   push:
     branches:
@@ -18,5 +18,5 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: "./"
-          server-dir: "/var/group-apis/monitor/backend/dev/"
+          server-dir: "/monitor/backend/dev/"
           git-ftp-args: "--changed-only"
