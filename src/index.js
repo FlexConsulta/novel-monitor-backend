@@ -41,5 +41,5 @@ app.use(ErrorHandling);
 app.use(Resume);
 
 app.listen(PORT, () => {
-  console.log(`O servidor está online: [${HOST}:${PORT}]`);
+  console.log(`O servidor está online : [${HOST}:${PORT}]`);
 });
