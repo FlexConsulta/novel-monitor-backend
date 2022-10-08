@@ -30,6 +30,7 @@ const getAllByServer = async (req, res, next) => {
 
     const data = await Models.getAll({
       model: TableLogs,
+      sort: [["created_at", "DESC"]],
       include: [{ model: TableDatabase, where: filterServer }],
     });
 
@@ -52,6 +53,7 @@ const getAllByCustomer = async (req, res, next) => {
 
     const data = await Models.getAll({
       model: TableLogs,
+      sort: [["created_at", "DESC"]],
       include: [{ model: TableDatabase, where: filterCustomer }],
     });
 
