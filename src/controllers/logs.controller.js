@@ -5,9 +5,12 @@ import { Sequelize } from "sequelize";
 import { Op } from "sequelize";
 
 const getAll = async (req, res, next) => {
+  const { page, paginate } = req.query;
   try {
     res.status(400);
     const data = await Models.getAll({
+      page,
+      paginate,
       model: TableLogs,
     });
 
@@ -18,7 +21,7 @@ const getAll = async (req, res, next) => {
   }
 };
 const getAllByServer = async (req, res, next) => {
-  const { serverid } = req.query;
+  const { serverid, page, paginate } = req.query;
 
   try {
     res.status(400);
@@ -30,6 +33,8 @@ const getAllByServer = async (req, res, next) => {
 
     const data = await Models.getAll({
       model: TableLogs,
+      page,
+      paginate,
       sort: [["created_at", "DESC"]],
       include: [{ model: TableDatabase, where: filterServer }],
     });
@@ -41,7 +46,7 @@ const getAllByServer = async (req, res, next) => {
   }
 };
 const getAllByCustomer = async (req, res, next) => {
-  const { customerid } = req.query;
+  const { customerid, page, paginate } = req.query;
 
   try {
     res.status(400);
@@ -53,6 +58,8 @@ const getAllByCustomer = async (req, res, next) => {
 
     const data = await Models.getAll({
       model: TableLogs,
+      page,
+      paginate,
       sort: [["created_at", "DESC"]],
       include: [{ model: TableDatabase, where: filterCustomer }],
     });
