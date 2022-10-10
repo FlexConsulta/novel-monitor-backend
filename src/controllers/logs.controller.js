@@ -2,12 +2,66 @@ import Models from "../database/schemas/default";
 import TableLogs from "../database/models/logs.model";
 import TableDatabase from "../database/models/databases.model";
 import { Sequelize } from "sequelize";
+import { Op } from "sequelize";
 
 const getAll = async (req, res, next) => {
+  const { page, paginate } = req.query;
   try {
     res.status(400);
     const data = await Models.getAll({
+      page,
+      paginate,
       model: TableLogs,
+    });
+
+    res.status(!data ? 404 : 200);
+    res.send(data || "Nenhum Log foi encontrado!");
+  } catch (error) {
+    next(error);
+  }
+};
+const getAllByServer = async (req, res, next) => {
+  const { serverid, page, paginate } = req.query;
+
+  try {
+    res.status(400);
+
+    TableLogs.associate([TableDatabase]);
+    let filterServer;
+
+    if (serverid) filterServer = [{ id_server: { [Op.eq]: serverid } }];
+
+    const data = await Models.getAll({
+      model: TableLogs,
+      page,
+      paginate,
+      sort: [["created_at", "DESC"]],
+      include: [{ model: TableDatabase, where: filterServer }],
+    });
+
+    res.status(!data ? 404 : 200);
+    res.send(data || "Nenhum Log foi encontrado!");
+  } catch (error) {
+    next(error);
+  }
+};
+const getAllByCustomer = async (req, res, next) => {
+  const { customerid, page, paginate } = req.query;
+
+  try {
+    res.status(400);
+
+    TableLogs.associate([TableDatabase]);
+    let filterCustomer;
+
+    if (customerid) filterCustomer = [{ id_client: customerid }];
+
+    const data = await Models.getAll({
+      model: TableLogs,
+      page,
+      paginate,
+      sort: [["created_at", "DESC"]],
+      include: [{ model: TableDatabase, where: filterCustomer }],
     });
 
     res.status(!data ? 404 : 200);
@@ -134,4 +188,18 @@ const deleteOne = async (req, res, next) => {
   }
 };
 
-export default { getAll, create, getOne, update, deleteOne };
+TableLogs.associate = () => {
+  TableLogs.belongsTo(TableDatabase, {
+    foreignKey: "id_database",
+    targetKey: "id",
+  });
+};
+export default {
+  getAll,
+  create,
+  getOne,
+  update,
+  deleteOne,
+  getAllByServer,
+  getAllByCustomer,
+};
