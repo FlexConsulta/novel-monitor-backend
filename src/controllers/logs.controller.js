@@ -54,7 +54,7 @@ const getAllByCustomer = async (req, res, next) => {
     TableLogs.associate([TableDatabase]);
     let filterCustomer;
 
-    if (customerid) filterCustomer = [{ id_client: { [Op.eq]: customerid } }];
+    if (customerid) filterCustomer = [{ id_client: customerid }];
 
     const data = await Models.getAll({
       model: TableLogs,
