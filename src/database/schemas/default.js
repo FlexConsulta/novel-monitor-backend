@@ -12,7 +12,7 @@ const getAll = async ({
       const options = {
         where: filter || {},
         attributes: attributes || null,
-        sort: sort || [],
+        order: sort || [],
         include: include,
         page,
         paginate,
