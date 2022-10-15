@@ -14,6 +14,8 @@ router.route("/api/logs/server").get(LogsController.getAllByServer);
 
 router.route("/api/logs/customer").get(LogsController.getAllByCustomer);
 
+router.route("/api/logs/database").get(LogsController.getAllByDataBase);
+
 router
   .route("/api/logs/:id")
   .get(LogsController.getOne)
