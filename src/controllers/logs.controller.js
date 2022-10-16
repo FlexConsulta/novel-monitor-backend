@@ -2,7 +2,6 @@ import Models from "../database/schemas/default";
 import TableLogs from "../database/models/logs.model";
 import TableDatabase from "../database/models/databases.model";
 import { Sequelize } from "sequelize";
-import { Op } from "sequelize";
 
 const getAll = async (req, res, next) => {
   const { page, paginate } = req.query;
@@ -21,22 +20,58 @@ const getAll = async (req, res, next) => {
   }
 };
 const getAllByServer = async (req, res, next) => {
-  const { serverid, page, paginate } = req.query;
+  const { id_server } = req.query;
 
   try {
     res.status(400);
 
     TableLogs.associate([TableDatabase]);
-    let filterServer;
 
-    if (serverid) filterServer = [{ id_server: { [Op.eq]: serverid } }];
+    const databasis = await Models.getAllDefault({
+      model: TableDatabase,
+      filter: { id_server: id_server },
+      attributes: [
+        [Sequelize.fn("DISTINCT", Sequelize.col("id")), "id_database"],
+      ],
+    });
+
+    const data = [];
+
+    await Promise.all(
+      databasis.map(async (database) => {
+        const dataTeste = await Models.getAllLimited({
+          model: TableLogs,
+          limit: 1,
+          filter: { id_database: database.dataValues.id_database },
+          sort: [["created_at", "DESC"]],
+          include: [{ model: TableDatabase }],
+        });
+        data.push(dataTeste[0].dataValues);
+      })
+    );
+
+    res.status(!data ? 404 : 200);
+    res.send(data || "Nenhum Log foi encontrado!");
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllByDataBase = async (req, res, next) => {
+  const { id_database, page, paginate } = req.query;
+
+  try {
+    res.status(400);
+
+    TableLogs.associate([TableDatabase]);
 
     const data = await Models.getAll({
       model: TableLogs,
       page,
+      filter: { id_database },
       paginate,
       sort: [["created_at", "DESC"]],
-      include: [{ model: TableDatabase, where: filterServer }],
+      include: [{ model: TableDatabase }],
     });
 
     res.status(!data ? 404 : 200);
@@ -46,23 +81,35 @@ const getAllByServer = async (req, res, next) => {
   }
 };
 const getAllByCustomer = async (req, res, next) => {
-  const { customerid, page, paginate } = req.query;
+  const { id_customer } = req.query;
 
   try {
     res.status(400);
 
     TableLogs.associate([TableDatabase]);
-    let filterCustomer;
 
-    if (customerid) filterCustomer = [{ id_client: customerid }];
-
-    const data = await Models.getAll({
-      model: TableLogs,
-      page,
-      paginate,
-      sort: [["created_at", "DESC"]],
-      include: [{ model: TableDatabase, where: filterCustomer }],
+    const databasis = await Models.getAllDefault({
+      model: TableDatabase,
+      filter: { id_client: id_customer },
+      attributes: [
+        [Sequelize.fn("DISTINCT", Sequelize.col("id")), "id_database"],
+      ],
     });
+
+    const data = [];
+
+    await Promise.all(
+      databasis.map(async (database) => {
+        const dataTeste = await Models.getAllLimited({
+          model: TableLogs,
+          limit: 1,
+          filter: { id_database: database.dataValues.id_database },
+          sort: [["created_at", "DESC"]],
+          include: [{ model: TableDatabase }],
+        });
+        data.push(dataTeste[0].dataValues);
+      })
+    );
 
     res.status(!data ? 404 : 200);
     res.send(data || "Nenhum Log foi encontrado!");
@@ -202,4 +249,6 @@ export default {
   deleteOne,
   getAllByServer,
   getAllByCustomer,
+  getAllByDataBase,
+  getAll,
 };
