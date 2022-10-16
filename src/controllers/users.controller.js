@@ -85,10 +85,10 @@ const getAll = async (req, res, next) => {
     let filterProfile;
     let filter;
 
-    if (name) filterPerson = [{ name: { [Op.like]: `%${name}%` } }];
+    if (name) filterPerson = [{ name: { [Op.iLike]: `%${name}%` } }];
     if (email)
-      filterPerson = [...filterPerson, { email: { [Op.like]: `%${email}%` } }];
-    if (profile) filterProfile = [{ name: { [Op.like]: `%${profile}%` } }];
+      filterPerson = [...filterPerson, { email: { [Op.iLike]: `%${email}%` } }];
+    if (profile) filterProfile = [{ name: { [Op.iLike]: `%${profile}%` } }];
     if (active) filter = [{ active }];
 
     TableUsers.associate([TablePersons, TableProfiles, TableClients]);
