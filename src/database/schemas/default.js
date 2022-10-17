@@ -27,6 +27,35 @@ const getAll = async ({
     }
   });
 };
+
+const getAllLimited = async ({
+  model,
+  filter,
+  attributes,
+  sort,
+  include,
+  limit,
+}) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const options = {
+        where: filter || {},
+        attributes: attributes || null,
+        order: sort || [],
+        include,
+        limit,
+      };
+      const data = await model.findAll(options);
+
+      if (data.length == 0) resolve(null);
+
+      resolve(data);
+    } catch (error) {
+      reject(error?.original || error?.message || error);
+    }
+  });
+};
+
 const getAllDefault = async ({ model, filter, attributes, sort, include }) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -130,4 +159,6 @@ export default {
   updateOne,
   deleteOne,
   getOnePk,
+  getAllLimited,
+  getAllDefault,
 };

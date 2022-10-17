@@ -10,8 +10,8 @@ const getAll = async (req, res, next) => {
 
     let filter = [];
 
-    if (name) filter = [{ name: { [Op.like]: `%${name}%` } }];
-    if (url) filter = [...filter, { url: { [Op.like]: `%${url}%` } }];
+    if (name) filter = [{ name: { [Op.iLike]: `%${name}%` } }];
+    if (url) filter = [...filter, { url: { [Op.iLike]: `%${url}%` } }];
     if (ativo) filter = [...filter, { ativo }];
 
     const data = await Models.getAll({

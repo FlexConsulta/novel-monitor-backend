@@ -17,12 +17,12 @@ const getAll = async (req, res, next) => {
     let filterClient;
 
     if (namedefault)
-      filter = [{ name_default: { [Op.like]: `%${namedefault}%` } }];
+      filter = [{ name_default: { [Op.iLike]: `%${namedefault}%` } }];
     if (sincronizacao) filter = [...filter, { sincronizacao }];
 
-    if (server) filterServer = [{ name: { [Op.like]: `%${server}%` } }];
+    if (server) filterServer = [{ name: { [Op.iLike]: `%${server}%` } }];
 
-    if (client) filterClient = [{ name: { [Op.like]: `%${client}%` } }];
+    if (client) filterClient = [{ name: { [Op.iLike]: `%${client}%` } }];
 
     TableDatabases.associate([TableServer, TableClients]);
 
