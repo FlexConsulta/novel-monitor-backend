@@ -17,18 +17,6 @@ const create = async (req, res, next) => {
     const templatePath = resolve(__dirname, "src", "utils", "newPassword.hbs");
     const passwordHash = await hash(newPassword, 10);
 
-    if (phone) {
-      let hasPhone = await Models.getOne({
-        model: TablePersons,
-        filter: { phone },
-        attributes: ["id"],
-      });
-      if (hasPhone) {
-        res.status(409);
-        throw new Error("Telefone ja utilizado");
-      }
-    }
-
     if (email) {
       let hasEmail = await Models.getOne({
         model: TablePersons,
@@ -116,20 +104,6 @@ const update = async (req, res, next) => {
       throw new Error("Pessoa não encontrada");
     }
 
-    // let { phone } = req.body;
-
-    // if (phone) {
-    //   let hasPhone = await Models.getOne({
-    //     model: TablePersons,
-    //     filter: { phone },
-    //     attributes: ["id"],
-    //   });
-    //   if (hasPhone && hasPhone.id !== Number(id)) {
-    //     res.status(409)
-    //     throw new Error("Telefone ja utilizado");
-    //   }
-    // }
-
     let { email } = req.body;
     if (email) {
       let hasEmail = await Models.getOne({
@@ -149,6 +123,7 @@ const update = async (req, res, next) => {
         throw new Error("Email ja utilizado");
       }
     }
+
     const data = await Models.updateOne({
       model: TablePersons,
       data: req.body,
