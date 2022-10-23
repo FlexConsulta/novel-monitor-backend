@@ -4,14 +4,32 @@ import TableDatabase from "../database/models/databases.model";
 import { Sequelize } from "sequelize";
 
 const getAll = async (req, res, next) => {
-  const { page, paginate } = req.query;
   try {
     res.status(400);
-    const data = await Models.getAll({
-      page,
-      paginate,
-      model: TableLogs,
+
+    TableLogs.associate([TableDatabase]);
+
+    const databasis = await Models.getAllDefault({
+      model: TableDatabase,
+      attributes: [
+        [Sequelize.fn("DISTINCT", Sequelize.col("id")), "id_database"],
+      ],
     });
+
+    const data = [];
+
+    await Promise.all(
+      databasis.map(async (database) => {
+        const dataTeste = await Models.getAllLimited({
+          model: TableLogs,
+          limit: 1,
+          filter: { id_database: database.dataValues.id_database },
+          sort: [["created_at", "DESC"]],
+          include: [{ model: TableDatabase }],
+        });
+        data.push(dataTeste[0].dataValues);
+      })
+    );
 
     res.status(!data ? 404 : 200);
     res.send(data || "Nenhum Log foi encontrado!");
@@ -19,6 +37,7 @@ const getAll = async (req, res, next) => {
     next(error);
   }
 };
+
 const getAllByServer = async (req, res, next) => {
   const { id_server } = req.query;
 
@@ -69,7 +88,7 @@ const getAllByDataBase = async (req, res, next) => {
       model: TableLogs,
       page,
       filter: { id_database },
-      paginate,
+      paginate: paginate || 999999,
       sort: [["created_at", "DESC"]],
       include: [{ model: TableDatabase }],
     });

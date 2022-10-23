@@ -28,8 +28,9 @@ const getAll = async (req, res, next) => {
 
     const data = await Models.getAll({
       page,
-      paginate,
+      paginate: paginate || 99999999,
       filter,
+      sort: [["name_default", "asc"]],
       model: TableDatabases,
       include: [
         { model: TableServer, where: filterServer },

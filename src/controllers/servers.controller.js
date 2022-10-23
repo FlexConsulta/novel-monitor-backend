@@ -6,18 +6,20 @@ import { Op } from "sequelize";
 const getAll = async (req, res, next) => {
   try {
     res.status(400);
-    const { page, paginate, name, url, ativo } = req.query;
+    const { page, paginate, name, url, ativo, port } = req.query;
 
     let filter = [];
 
     if (name) filter = [{ name: { [Op.iLike]: `%${name}%` } }];
     if (url) filter = [...filter, { url: { [Op.iLike]: `%${url}%` } }];
     if (ativo) filter = [...filter, { ativo }];
+    if (port) filter = [...filter, { port }];
 
     const data = await Models.getAll({
       page,
       paginate,
       filter,
+      sort: [["name", "ASC"]],
       model: TableServers,
     });
     const dataActive = await Models.getAll({
