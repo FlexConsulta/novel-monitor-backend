@@ -98,6 +98,8 @@ const getAll = async (req, res, next) => {
       paginate,
       model: TableUsers,
       filter,
+      sort: [[TablePersons, "name", "ASC"]],
+
       include: [
         { model: TablePersons, where: filterPerson },
         { model: TableClients },
