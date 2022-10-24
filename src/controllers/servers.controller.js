@@ -112,19 +112,6 @@ const update = async (req, res, next) => {
       }
     }
 
-    if (url) {
-      let hasUrl = await Models.getOne({
-        model: TableServers,
-        filter: { url },
-        attributes: ["id"],
-      });
-
-      if (hasUrl && hasUrl.id !== Number(id)) {
-        res.status(409);
-        throw new Error("Url já utilizado");
-      }
-    }
-
     const data = await Models.updateOne({
       model: TableServers,
       data: req.body,
