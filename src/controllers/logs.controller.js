@@ -20,14 +20,14 @@ const getAll = async (req, res, next) => {
 
     await Promise.all(
       databasis.map(async (database) => {
-        const dataTeste = await Models.getAllLimited({
+        const searchedDatabase = await Models.getAllLimited({
           model: TableLogs,
           limit: 1,
-          filter: { id_database: database.dataValues.id_database },
+          filter: { id_database: database?.dataValues?.id_database },
           sort: [["created_at", "DESC"]],
           include: [{ model: TableDatabase }],
         });
-        data.push(dataTeste[0].dataValues);
+        if (searchedDatabase) data.push(searchedDatabase[0]?.dataValues);
       })
     );
 
