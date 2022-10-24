@@ -71,16 +71,6 @@ const create = async (req, res, next) => {
       throw new Error("Nome já utilizado");
     }
 
-    let hasUrl = await Models.getOne({
-      model: TableServers,
-      filter: { url },
-      attributes: ["id"],
-    });
-    if (hasUrl) {
-      res.status(409);
-      throw new Error("Url já utilizado");
-    }
-
     const data = await Models.createOne({
       model: TableServers,
       data: req.body,
