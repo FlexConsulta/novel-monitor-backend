@@ -153,7 +153,7 @@ const deleteOne = async (req, res, next) => {
     if (hasServerDatabase) {
       res.status(500);
       throw new Error(
-        "Não foi possível excluir o Servidor, pois possui dependência(s)"
+        "Existem bancos de dados relacionados à este servidor, não é possível excluí-lo."
       );
     }
 
