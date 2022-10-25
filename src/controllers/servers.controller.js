@@ -131,6 +131,8 @@ const deleteOne = async (req, res, next) => {
 
     const { id } = req.params;
 
+    console.log(id);
+
     let rsltServer = await Models.getOne({
       model: TableServers,
       filter: { id },
@@ -142,11 +144,9 @@ const deleteOne = async (req, res, next) => {
       throw new Error("Servidor não encontrado");
     }
 
-    let id_server = rsltServer;
-
     let hasServerDatabase = await Models.getOne({
       model: TableDatabase,
-      filter: id_server,
+      filter: { id_server: id },
       attributes: ["id"],
     });
 
