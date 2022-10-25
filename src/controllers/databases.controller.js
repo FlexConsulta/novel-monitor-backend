@@ -165,27 +165,6 @@ const deleteOne = async (req, res, next) => {
       throw new Error("Banco de Dados não encontado");
     }
 
-    let id_database = rsltDatabase;
-
-    let hasDatabaseLogs = await Models.getOne({
-      model: TableLogs,
-      filter: id_database,
-      attributes: ["id"],
-    });
-
-    let hasViewDatabase = await Models.getOne({
-      model: TableViewDatabase,
-      filter: id_database,
-      attributes: ["id"],
-    });
-
-    if (hasDatabaseLogs || hasViewDatabase) {
-      res.status(500);
-      throw new Error(
-        "Não foi possível excluir o banco de dados, pois possui dependência(s)"
-      );
-    }
-
     await Models.deleteOne({
       model: TableDatabases,
       filter: { id },
