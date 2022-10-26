@@ -16,6 +16,8 @@ router.route("/api/logs/customer").get(LogsController.getAllByCustomer);
 
 router.route("/api/logs/database").get(LogsController.getAllByDataBase);
 
+router.route("/api/logs/sync").post(LogsController.syncDatabases);
+
 router
   .route("/api/logs/:id")
   .get(LogsController.getOne)
