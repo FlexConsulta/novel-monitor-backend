@@ -2,11 +2,11 @@ import Models from "../database/schemas/default";
 import TableLogs from "../database/models/logs.model";
 import TableDatabase from "../database/models/databases.model";
 import { Sequelize } from "sequelize";
+import { Api } from "../services/api";
 
 const getAll = async (req, res, next) => {
   try {
     res.status(400);
-
     TableLogs.associate([TableDatabase]);
 
     const databasis = await Models.getAllDefault({
@@ -261,6 +261,11 @@ TableLogs.associate = () => {
     targetKey: "id",
   });
 };
+
+const syncDatabases = async () =>{
+  await Api.post('/refresh')
+}
+
 export default {
   getAll,
   create,
@@ -271,4 +276,5 @@ export default {
   getAllByCustomer,
   getAllByDataBase,
   getAll,
+  syncDatabases,
 };
