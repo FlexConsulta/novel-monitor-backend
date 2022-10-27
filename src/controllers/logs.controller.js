@@ -266,6 +266,12 @@ const syncDatabases = async () =>{
   await Api.post('/refresh')
 }
 
+const testConnection = async (req, res, next) =>{
+  const { id_database } = req.query;
+  const newLog = await Api.get(`/test-connection?id_database=${id_database}`)
+  res.send(newLog.data.description).status(200)
+}
+
 export default {
   getAll,
   create,
@@ -277,4 +283,5 @@ export default {
   getAllByDataBase,
   getAll,
   syncDatabases,
+  testConnection,
 };
