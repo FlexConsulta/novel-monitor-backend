@@ -18,6 +18,8 @@ router.route("/api/logs/database").get(LogsController.getAllByDataBase);
 
 router.route("/api/logs/sync").post(LogsController.syncDatabases);
 
+router.route("/api/logs/test-connection").get(LogsController.testConnection);
+
 router
   .route("/api/logs/:id")
   .get(LogsController.getOne)
