@@ -30,12 +30,4 @@ const View_databases = Sequelize.define(
   }
 );
 
-View_databases.associate = (model) => {
-  View_databases.belongsTo(model.users, { foreignKey: "id_user", as: "user" });
-  View_databases.belongsTo(model.databases, {
-    foreignKey: "id_database",
-    as: "database",
-  });
-};
-
 export default View_databases;
