@@ -3,38 +3,28 @@ import TableLogs from "../database/models/logs.model";
 import TableDatabase from "../database/models/databases.model";
 import { Sequelize } from "sequelize";
 import { Api } from "../services/api";
+import ViewLogs from "../database/models/views.log.model";
 
 const getAll = async (req, res, next) => {
   try {
+    const { page, paginate } = req.query;
+
+    // console.log(page, paginate);
+
     res.status(400);
     TableLogs.associate([TableDatabase]);
 
-    const databasis = await Models.getAllDefault({
-      model: TableDatabase,
-      attributes: [
-        [Sequelize.fn("DISTINCT", Sequelize.col("id")), "id_database"],
-      ],
+    const data = await Models.getAll({
+      model: ViewLogs,
+      sort: [["name_default", "asc"]],
+      page,
+      paginate: paginate || 999999,
     });
-
-    const data = [];
-
-    await Promise.all(
-      databasis.map(async (database) => {
-        const searchedDatabase = await Models.getAllLimited({
-          model: TableLogs,
-          limit: 1,
-          filter: { id_database: database?.dataValues?.id_database },
-          sort: [["created_at", "DESC"]],
-          include: [{ model: TableDatabase }],
-        });
-        // if (!searchedDatabase) console.log(database?.dataValues?.id_database);
-        if (searchedDatabase) data.push(searchedDatabase[0]?.dataValues);
-      })
-    );
 
     res.status(!data ? 404 : 200);
     res.send(data || "Nenhum Log foi encontrado!");
   } catch (error) {
+    console.log("error", error);
     next(error);
   }
 };
@@ -262,9 +252,9 @@ TableLogs.associate = () => {
   });
 };
 
-const syncDatabases = async () =>{
-  await Api.post('/refresh')
-}
+const syncDatabases = async () => {
+  await Api.post("/refresh");
+};
 
 export default {
   getAll,
