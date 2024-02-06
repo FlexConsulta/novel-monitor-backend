@@ -1,16 +1,12 @@
 import crypto from "crypto";
 import { hash } from "bcrypt";
-import { resolve } from "path"
-import sendMail from "../services/email.service";
+import Transporter from "../services/email.service";
 import Models from "../database/schemas/default";
 import TablePersons from "../database/models/persons.model";
 
 const recovery = async (req, res, next) => {
     try {
         const { email } = req.body;
-
-        const __dirname = resolve();
-        const templatePath = resolve(__dirname, "src", "utils", "forgotPassword.hbs")
 
         const person = await Models.getOne({
             model: TablePersons,
@@ -36,7 +32,38 @@ const recovery = async (req, res, next) => {
             filter: { id: person.id },
         });
 
-        sendMail(email, "Recuperação de senha", mailVariables, templatePath);
+        const templatePath = `
+            <style>
+            .container {
+            width: 800px;
+            font-family: Arial, Helvetica, sans-serif;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            }
+            </style>
+
+            <div class="container">
+            <span>Oi, ${mailVariables.name} </span>
+            <br>
+            <br>
+            <span>Você solicitou alteração de senha, sua nova senha é: ${mailVariables.newPassword}</span>
+            <br>
+            <h3>Equipe | <strong>DCL Brasil Tecnologia</strong></h3>
+            </div>
+        `
+
+        await Transporter({
+            from: 'syncbackupdlcbrasiltecnologia@gmail.com',
+            to: email,
+            subject: "Monitor Backup",
+            text: templatePath,
+            html: templatePath,
+
+        })
+            .then((result) => console.log(`[>] Mail enviado com sucesso: [${result.envelope.to}]`))
+            .catch((err) => console.log(`[>] Ocorreu um erro no envio do mail: ${err}`));
+
         delete data.password;
 
         res.status(200).send(data);

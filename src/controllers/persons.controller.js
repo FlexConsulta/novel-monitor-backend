@@ -4,7 +4,7 @@ import { hash } from "bcrypt";
 import { Op } from "sequelize";
 import { resolve } from "path";
 import crypto from "crypto";
-import sendMail from "../services/email.service";
+import Transporter from "../services/email.service";
 
 const create = async (req, res, next) => {
   try {
@@ -13,8 +13,6 @@ const create = async (req, res, next) => {
     const { phone, email, name } = req.body;
 
     const newPassword = crypto.randomBytes(20).toString("hex").substring(0, 8);
-    const __dirname = resolve();
-    const templatePath = resolve(__dirname, "src", "utils", "newPassword.hbs");
     const passwordHash = await hash(newPassword, 10);
 
     if (email) {
@@ -39,12 +37,40 @@ const create = async (req, res, next) => {
       name,
       newPassword,
     };
-    sendMail(
-      process.env.EMAIL_FOR_TEST || email,
-      "Cadastro de Usuário",
-      mailVariables,
-      templatePath
-    );
+
+
+
+    const templatePath = `
+    <style>
+    .container {
+        width: 800px;
+        font-family: Arial, Helvetica, sans-serif;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+
+<div class="container">
+    <span>Oi, ${mailVariables.name} </span>
+    <br>
+    <br>
+    <span>Você foi cadastrado no monitor de banco de dados da Novel, sua senha é:  ${mailVariables.newPassword}</span>
+    <br>
+    <h3>Equipe | <strong>DCL Brasil Tecnologia</strong></h3>
+</div>
+`
+
+    await Transporter({
+      from: 'syncbackupdlcbrasiltecnologia@gmail.com',
+      to: process.env.EMAIL_FOR_TEST || email,
+      subject: "Monitor Backup",
+      text: templatePath,
+      html: templatePath,
+
+    })
+      .then((result) => console.log(`[>] Mail enviado com sucesso: [${result.envelope.to}]`))
+      .catch((err) => console.log(`[>] Ocorreu um erro no envio do mail: ${err}`));
 
     res.status(200);
     res.send(data || "Nenhuma pessoa foi encontrada!");
