@@ -21,7 +21,7 @@ const getAll = async (req, res, next) => {
     });
     const persons = await Models.getAll({
       model: TablePersons,
-    });
+    }); 
     const servers = await Models.getAll({
       model: TableServers,
     });
@@ -31,16 +31,16 @@ const getAll = async (req, res, next) => {
 
     const data = {
       // docs: servers.docs,
-      clients: clients.total,
-      clientsAtive: clients.docs.filter((client) => client.sincronizacao)
-        .length,
       databases: databases.total,
-      dataBasesAtive: databases.docs.filter((client) => client.sincronizacao)
-        .length,
-      logs: logs.total,
-      persons: persons.total,
       servers: servers.total,
       serversAtive: servers.docs.filter((server) => server.active).length,
+
+
+      clients: clients.total,
+      clientsAtive: clients.docs.filter((client) => client.sincronizacao).length,
+      dataBasesAtive: databases.docs.filter((client) => client.sincronizacao).length,
+      logs: logs.total,
+      persons: persons.total,
       users: users.total,
       usersAtive: users.docs.filter((user) => user.active).length,
     };
