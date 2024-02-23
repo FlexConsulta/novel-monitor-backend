@@ -9,6 +9,7 @@ const getAll = async ({
 }) => {
   return new Promise(async (resolve, reject) => {
     try {
+
       const options = {
         where: filter || {},
         attributes: attributes || null,
