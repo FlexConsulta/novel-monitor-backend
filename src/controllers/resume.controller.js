@@ -11,7 +11,7 @@ const getAll = async (req, res, next) => {
     const rsltClients = await Models.getAll({ model: TableClients });
     const rsltServers = await Models.getAll({ model: TableServers });
     const rsltDatabases = await Models.getAll({ model: TableDatabase });
-    const rsltLogs = await Models.getAll({ model: TableLogs });
+    const rsltLogs = await Models.getAllLastLogs({ model: TableLogs });
 
     const data = {
       clients: rsltClients,
