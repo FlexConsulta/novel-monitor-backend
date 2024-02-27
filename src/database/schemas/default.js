@@ -170,6 +170,7 @@ const getAllLastLogs = async ({
             FROM ${model.tableName}
             GROUP BY "group"
             HAVING COUNT(*) >= ${dbs}
+            LIMIT 1
           )
         ) AS subquery
         INNER JOIN databases ON subquery.id_database = databases.id
