@@ -161,20 +161,21 @@ const getAllLastLogs = async ({
       model.sequelize.options.quoteIdentifiers = false;
 
       const query = `
-        SELECT subquery.*, databases.name_default
-        FROM (
-          SELECT *, ROW_NUMBER() OVER (PARTITION BY "group" ORDER BY created_at DESC) as row_num
+      SELECT subquery.*, databases.name_default
+      FROM (
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY "group" ORDER BY id DESC) as row_num
+        FROM ${model.tableName}
+        WHERE "group" IN (
+          SELECT "group"
           FROM ${model.tableName}
-          WHERE "group" IN (
-            SELECT "group"
-            FROM ${model.tableName}
-            GROUP BY "group"
-            HAVING COUNT(*) >= ${dbs}
-            LIMIT 1
-          )
-        ) AS subquery
-        INNER JOIN databases ON subquery.id_database = databases.id
-        WHERE row_num <= ${dbs};
+          GROUP BY "group"
+          HAVING COUNT(*) >= ${dbs}
+          ORDER BY MIN(id) DESC -- Alteração aqui para ordenar pelo id mais recente primeiro
+          LIMIT 1
+        )
+      ) AS subquery
+      INNER JOIN databases ON subquery.id_database = databases.id
+      WHERE row_num <= ${dbs};
       `;
 
       const data = await model.sequelize.query(query, {
