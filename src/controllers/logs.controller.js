@@ -17,8 +17,8 @@ const getAll = async (req, res, next) => {
     const data = await Models.getAll({
       model: ViewLogs,
       sort: [["name_default", "asc"]],
-      page,
-      paginate: paginate || 999999,
+      // page,
+      // paginate: paginate || 999999,
     });
 
     res.status(!data ? 404 : 200);
