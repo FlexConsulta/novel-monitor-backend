@@ -154,30 +154,11 @@ const getOnePk = async ({ pk, model, filter, attributes, include }) => {
 };
 
 const getAllLastLogs = async ({
-  model
+  model, dbs
 }) => {
   return new Promise(async (resolve, reject) => {
     try {
       model.sequelize.options.quoteIdentifiers = false;
-      const totalBancosQuery = `
-      SELECT *
-      FROM (
-        SELECT *, ROW_NUMBER() OVER (PARTITION BY "group" ORDER BY id DESC) as row_num
-        FROM ${model.tableName}
-        WHERE "group" IN (
-          SELECT "group"
-          FROM ${model.tableName}
-          GROUP BY "group"
-          ORDER BY MIN(id)
-          LIMIT 1
-        )
-      ) AS subquery
-      `;
-
-      const totalBanco = await model.sequelize.query(totalBancosQuery, {
-        model: model,
-        mapToModel: true,
-      });
 
       const query = `
         SELECT *
@@ -188,12 +169,12 @@ const getAllLastLogs = async ({
             SELECT "group"
             FROM ${model.tableName}
             GROUP BY "group"
-            HAVING COUNT(*) >= ${totalBanco.length}
+            HAVING COUNT(*) >= ${dbs}
             ORDER BY MIN(id)
             LIMIT 1
           )
         ) AS subquery
-        WHERE row_num <= ${totalBanco.length};
+        WHERE row_num <= ${dbs};
       `;
 
       const data = await model.sequelize.query(query, {

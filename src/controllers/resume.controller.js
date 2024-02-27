@@ -10,8 +10,10 @@ const getAll = async (req, res, next) => {
 
     const rsltClients = await Models.getAll({ model: TableClients });
     const rsltServers = await Models.getAll({ model: TableServers });
-    const rsltDatabases = await Models.getAll({ model: TableDatabase });
-    const rsltLogs = await Models.getAllLastLogs({ model: TableLogs });
+    const rsltDatabases = await Models.getAll({ model: TableDatabase, filter : {
+      sincronizacao : true
+    } });
+    const rsltLogs = await Models.getAllLastLogs({ model: TableLogs, dbs: rsltDatabases?.total });
 
     const data = {
       clients: rsltClients,
