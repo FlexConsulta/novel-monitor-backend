@@ -161,7 +161,7 @@ const getAllLastLogs = async ({
       model.sequelize.options.quoteIdentifiers = false;
 
       const query = `
-        SELECT *
+        SELECT subquery.*, databases.name_default
         FROM (
           SELECT *, ROW_NUMBER() OVER (PARTITION BY "group" ORDER BY id DESC) as row_num
           FROM ${model.tableName}
@@ -170,10 +170,11 @@ const getAllLastLogs = async ({
             FROM ${model.tableName}
             GROUP BY "group"
             HAVING COUNT(*) >= ${dbs}
-            ORDER BY MIN(id)
-            LIMIT 1
+            ORDER BY MIN(id) -- Ordena pelo menor ID dentro do grupo para garantir que pegaremos o primeiro grupo
+            LIMIT 1 -- Limita a consulta a apenas um grupo
           )
         ) AS subquery
+        INNER JOIN databases ON subquery.id_database = databases.id
         WHERE row_num <= ${dbs};
       `;
 
