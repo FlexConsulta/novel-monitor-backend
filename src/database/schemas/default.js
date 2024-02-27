@@ -163,15 +163,13 @@ const getAllLastLogs = async ({
       const query = `
         SELECT subquery.*, databases.name_default
         FROM (
-          SELECT *, ROW_NUMBER() OVER (PARTITION BY "group" ORDER BY id DESC) as row_num
+          SELECT *, ROW_NUMBER() OVER (PARTITION BY "group" ORDER BY created_at DESC) as row_num
           FROM ${model.tableName}
           WHERE "group" IN (
             SELECT "group"
             FROM ${model.tableName}
             GROUP BY "group"
             HAVING COUNT(*) >= ${dbs}
-            ORDER BY MIN(id) -- Ordena pelo menor ID dentro do grupo para garantir que pegaremos o primeiro grupo
-            LIMIT 1 -- Limita a consulta a apenas um grupo
           )
         ) AS subquery
         INNER JOIN databases ON subquery.id_database = databases.id
