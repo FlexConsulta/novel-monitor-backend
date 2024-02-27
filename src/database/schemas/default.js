@@ -153,8 +153,45 @@ const getOnePk = async ({ pk, model, filter, attributes, include }) => {
   });
 };
 
+const getAllLastLogs = async ({
+  model
+}) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      model.sequelize.options.quoteIdentifiers = false;
+      const query = `
+        SELECT *
+        FROM (
+          SELECT *, ROW_NUMBER() OVER (PARTITION BY "group" ORDER BY id DESC) as row_num
+          FROM ${model.tableName}
+          WHERE "group" IN (
+            SELECT "group"
+            FROM ${model.tableName}
+            GROUP BY "group"
+            HAVING COUNT(*) >= 6
+            ORDER BY MIN(id)
+            LIMIT 1
+          )
+        ) AS subquery
+        WHERE row_num <= 6;
+      `;
+
+      const data = await model.sequelize.query(query, {
+        model: model,
+        mapToModel: true,
+      });
+
+      resolve(data);
+    } catch (error) {
+      console.log(error)
+      reject(error?.original || error?.message || error);
+    }
+  });
+};
+
 export default {
   getAll,
+  getAllLastLogs,
   getOne,
   createOne,
   updateOne,
