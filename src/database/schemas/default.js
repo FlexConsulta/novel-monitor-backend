@@ -159,6 +159,26 @@ const getAllLastLogs = async ({
   return new Promise(async (resolve, reject) => {
     try {
       model.sequelize.options.quoteIdentifiers = false;
+      const totalBancosQuery = `
+      SELECT *
+      FROM (
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY "group" ORDER BY id DESC) as row_num
+        FROM ${model.tableName}
+        WHERE "group" IN (
+          SELECT "group"
+          FROM ${model.tableName}
+          GROUP BY "group"
+          ORDER BY MIN(id)
+          LIMIT 1
+        )
+      ) AS subquery
+      `;
+
+      const totalBanco = await model.sequelize.query(totalBancosQuery, {
+        model: model,
+        mapToModel: true,
+      });
+
       const query = `
         SELECT *
         FROM (
@@ -168,12 +188,12 @@ const getAllLastLogs = async ({
             SELECT "group"
             FROM ${model.tableName}
             GROUP BY "group"
-            HAVING COUNT(*) >= 6
+            HAVING COUNT(*) >= ${totalBanco.length}
             ORDER BY MIN(id)
             LIMIT 1
           )
         ) AS subquery
-        WHERE row_num <= 6;
+        WHERE row_num <= ${totalBanco.length};
       `;
 
       const data = await model.sequelize.query(query, {
