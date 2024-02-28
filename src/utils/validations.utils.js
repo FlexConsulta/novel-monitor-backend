@@ -23,6 +23,7 @@ const fields = (type) => {
         body("user_client").not().isEmpty().trim().escape(),
         body("password_client").not().isEmpty().trim().escape(),
         body("port_client").not().isEmpty().trim().escape(),
+        body("schemabd").not().isEmpty().trim().escape(),
       ];
       break;
     case "logs":

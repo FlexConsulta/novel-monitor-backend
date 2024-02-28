@@ -75,6 +75,9 @@ const Databases = Sequelize.define(
     description: {
       type: DataTypes.TEXT,
     },
+    schemabd: {
+      type: DataTypes.STRING,
+    }
   },
   {
     timestamps: false,
