@@ -24,6 +24,7 @@ const fields = (type) => {
         body("password_client").not().isEmpty().trim().escape(),
         body("port_client").not().isEmpty().trim().escape(),
         body("schemabd").not().isEmpty().trim().escape(),
+        body("schemabd_default").not().isEmpty().trim().escape(),
       ];
       break;
     case "logs":
@@ -112,6 +113,12 @@ const fields = (type) => {
           .escape()
           .optional({ nullable: true }),
         body("schemabd")
+          .not()
+          .isEmpty()
+          .trim()
+          .escape()
+          .optional({ nullable: true }),
+        body("schemabd_default")
           .not()
           .isEmpty()
           .trim()

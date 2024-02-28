@@ -77,6 +77,9 @@ const Databases = Sequelize.define(
     },
     schemabd: {
       type: DataTypes.STRING,
+    },
+    schemabd_default: {
+      type: DataTypes.STRING,
     }
   },
   {
