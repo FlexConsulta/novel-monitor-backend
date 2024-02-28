@@ -2,6 +2,7 @@ import express from "express";
 import "express-async-errors";
 // import "dotenv";
 import cors from "cors";
+import morgan from 'morgan';
 
 import ErrorHandling from "./middlewares/errors.handling.middlewares";
 
@@ -23,6 +24,9 @@ const { PORT, HOST } = process.env;
 
 const app = express();
 
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,6 +42,7 @@ app.use(PersonsRoutes);
 app.use(UsersRoutes);
 app.use(ViewsDatabaseRoutes);
 app.use(EmailController);
+
 app.use(ErrorHandling);
 app.use(Resume);
 
