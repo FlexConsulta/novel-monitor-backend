@@ -111,6 +111,12 @@ const fields = (type) => {
           .trim()
           .escape()
           .optional({ nullable: true }),
+        body("schemabd")
+          .not()
+          .isEmpty()
+          .trim()
+          .escape()
+          .optional({ nullable: true }),
       ];
       break;
     case "logsUp":
