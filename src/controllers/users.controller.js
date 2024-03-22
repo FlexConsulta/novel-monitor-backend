@@ -1,11 +1,11 @@
-import Models from "../database/schemas/default";
-import TableUsers from "../database/models/users.model";
-import TablePerson from "../database/models/persons.model";
-import TableClients from "../database/models/clients.model";
-import TableProfile from "../database/models/profiles.model";
-import TableViewDatabase from "../database/models/views.databases.model";
-import TableProfiles from "../database/models/profiles.model";
-import TablePersons from "../database/models/persons.model";
+import Models from "../database/schemas/default.js";
+import TableUsers from "../database/models/users.model.js";
+import TablePerson from "../database/models/persons.model.js";
+import TableClients from "../database/models/clients.model.js";
+import TableProfile from "../database/models/profiles.model.js";
+import TableViewDatabase from "../database/models/views.databases.model.js";
+import TableProfiles from "../database/models/profiles.model.js";
+import TablePersons from "../database/models/persons.model.js";
 import { Op } from "sequelize";
 
 const create = async (req, res, next) => {

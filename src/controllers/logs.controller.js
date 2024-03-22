@@ -1,9 +1,9 @@
-import Models from "../database/schemas/default";
-import TableLogs from "../database/models/logs.model";
-import TableDatabase from "../database/models/databases.model";
+import Models from "../database/schemas/default.js";
+import TableLogs from "../database/models/logs.model.js";
+import TableDatabase from "../database/models/databases.model.js";
 import { Sequelize } from "sequelize";
-import { Api } from "../services/api";
-import ViewLogs from "../database/models/views.log.model";
+import { Api } from "../services/api.js";
+import ViewLogs from "../database/models/views.log.model.js";
 
 const getAll = async (req, res, next) => {
   try {

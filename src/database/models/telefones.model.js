@@ -1,6 +1,6 @@
 import Sequelize from "../index.js";
 import { DataTypes } from "sequelize";
-import TableClients from "./clients.model";
+import TableClients from "./clients.model.js";
 
 const Telefones_Clients = Sequelize.define(
   "telefone_clients",
@@ -17,16 +17,6 @@ const Telefones_Clients = Sequelize.define(
         },
       },
     },
-
-    /* idcliente: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "clients",
-        key: "id",
-
-      },
-    },*/
   },
   {
     timestamps: false,

@@ -1,5 +1,5 @@
-import Models from "../database/schemas/default";
-import TablePersons from "../database/models/persons.model";
+import Models from "../database/schemas/default.js";
+import TablePersons from "../database/models/persons.model.js";
 import jwt from 'jsonwebtoken';
 // import {promisify} from "util";
 const { verify } = jwt;

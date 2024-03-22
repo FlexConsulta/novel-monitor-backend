@@ -1,8 +1,8 @@
-import Models from "../database/schemas/default";
-import TablePersons from "../database/models/persons.model";
-import TableUsers from "../database/models/users.model";
-import TableProfiles from "../database/models/profiles.model";
-import TableClients from "../database/models/clients.model";
+import Models from "../database/schemas/default.js";
+import TablePersons from "../database/models/persons.model.js";
+import TableUsers from "../database/models/users.model.js";
+import TableProfiles from "../database/models/profiles.model.js";
+import TableClients from "../database/models/clients.model.js";
 import { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 const { sign } = jwt;

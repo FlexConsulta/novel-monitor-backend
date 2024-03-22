@@ -1,6 +1,6 @@
-import Models from "../database/schemas/default";
-import TableProfile from "../database/models/profiles.model";
-import TableUsers from "../database/models/users.model";
+import Models from "../database/schemas/default.js";
+import TableProfile from "../database/models/profiles.model.js";
+import TableUsers from "../database/models/users.model.js";
 
 const create = async (req, res, next) => {
   try {

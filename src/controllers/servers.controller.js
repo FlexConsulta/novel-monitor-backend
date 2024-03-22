@@ -1,6 +1,6 @@
-import Models from "../database/schemas/default";
-import TableServers from "../database/models/servers.model";
-import TableDatabase from "../database/models/databases.model";
+import Models from "../database/schemas/default.js";
+import TableServers from "../database/models/servers.model.js";
+import TableDatabase from "../database/models/databases.model.js";
 import { Op } from "sequelize";
 
 const getAll = async (req, res, next) => {

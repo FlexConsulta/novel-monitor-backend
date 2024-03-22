@@ -1,10 +1,10 @@
 import Models from "../database/schemas/default.js";
-import TableClients from "../database/models/clients.model";
-import TableDatabase from "../database/models/databases.model";
-import TableLogs from "../database/models/logs.model";
-import TablePersons from "../database/models/persons.model";
-import TableServers from "../database/models/servers.model";
-import TableUsers from "../database/models/users.model";
+import TableClients from "../database/models/clients.model.js";
+import TableDatabase from "../database/models/databases.model.js";
+import TableLogs from "../database/models/logs.model.js";
+import TablePersons from "../database/models/persons.model.js";
+import TableServers from "../database/models/servers.model.js";
+import TableUsers from "../database/models/users.model.js";
 
 const getAll = async (req, res, next) => {
   try {

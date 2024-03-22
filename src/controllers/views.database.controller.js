@@ -1,7 +1,7 @@
-import Models from "../database/schemas/default";
-import TableViewsDatabase from "../database/models/views.databases.model";
-import TableUsers from "../database/models/users.model";
-import TableDatabase from "../database/models/databases.model";
+import Models from "../database/schemas/default.js";
+import TableViewsDatabase from "../database/models/views.databases.model.js";
+import TableUsers from "../database/models/users.model.js";
+import TableDatabase from "../database/models/databases.model.js";
 
 const create = async (req, res, next) => {
   try {

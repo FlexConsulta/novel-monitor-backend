@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import { hash } from "bcrypt";
-import Transporter from "../services/email.service";
-import Models from "../database/schemas/default";
-import TablePersons from "../database/models/persons.model";
+import Transporter from "../services/email.service.js";
+import Models from "../database/schemas/default.js";
+import TablePersons from "../database/models/persons.model.js";
 
 const recovery = async (req, res, next) => {
     try {

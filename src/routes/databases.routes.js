@@ -1,8 +1,8 @@
 import express from "express";
-import expressValidator from "../middlewares/express-validator";
-import fieldsValidations  from "../utils/validations.utils";
+import expressValidator from "../middlewares/express-validator.js";
+import fieldsValidations  from "../utils/validations.utils.js";
 const router = express.Router();
-import DatabasesController from "../controllers/databases.controller";
+import DatabasesController from "../controllers/databases.controller.js";
 
 router
   .route("/api/databases")

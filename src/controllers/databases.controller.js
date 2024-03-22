@@ -1,9 +1,9 @@
-import Models from "../database/schemas/default";
-import TableDatabases from "../database/models/databases.model";
-import TableServer from "../database/models/servers.model";
-import TableClients from "../database/models/clients.model";
-import TableLogs from "../database/models/logs.model";
-import TableViewDatabase from "../database/models/views.databases.model";
+import Models from "../database/schemas/default.js";
+import TableDatabases from "../database/models/databases.model.js";
+import TableServer from "../database/models/servers.model.js";
+import TableClients from "../database/models/clients.model.js";
+import TableLogs from "../database/models/logs.model.js";
+import TableViewDatabase from "../database/models/views.databases.model.js";
 import { Op } from "sequelize";
 
 const getAll = async (req, res, next) => {

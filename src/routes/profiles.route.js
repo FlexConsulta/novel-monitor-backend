@@ -1,9 +1,9 @@
 import express from "express";
 const router = express.Router();
-import expressValidator from "../middlewares/express-validator";
-import fieldsValidations  from "../utils/validations.utils";
+import expressValidator from "../middlewares/express-validator.js";
+import fieldsValidations  from "../utils/validations.utils.js";
 
-import ProfilesController from "../controllers/profiles.controller";
+import ProfilesController from "../controllers/profiles.controller.js";
 
 router
   .route("/api/profile")

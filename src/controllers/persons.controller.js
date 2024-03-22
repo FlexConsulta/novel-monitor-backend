@@ -1,10 +1,10 @@
-import Models from "../database/schemas/default";
-import TablePersons from "../database/models/persons.model";
+import Models from "../database/schemas/default.js";
+import TablePersons from "../database/models/persons.model.js";
 import { hash } from "bcrypt";
 import { Op } from "sequelize";
 import { resolve } from "path";
 import crypto from "crypto";
-import Transporter from "../services/email.service";
+import Transporter from "../services/email.service.js";
 
 const create = async (req, res, next) => {
   try {

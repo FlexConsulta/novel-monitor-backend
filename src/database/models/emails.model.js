@@ -1,6 +1,6 @@
 import Sequelize from "../index.js";
 import { DataTypes } from "sequelize";
-import TableClients from "./clients.model";
+import TableClients from "./clients.model.js";
 
 const Emails_Clients = Sequelize.define(
   "emails_clients",

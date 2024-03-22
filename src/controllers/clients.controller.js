@@ -1,9 +1,9 @@
-import Models from "../database/schemas/default";
-import TableClients from "../database/models/clients.model";
-import TableUsers from "../database/models/users.model";
-import Emails_Clients from "../database/models/emails.model";
-import telefone_clients from "../database/models/telefones.model";
-import Telefones_Clients from "../database/models/telefones.model";
+import Models from "../database/schemas/default.js";
+import TableClients from "../database/models/clients.model.js";
+import TableUsers from "../database/models/users.model.js";
+import Emails_Clients from "../database/models/emails.model.js";
+import telefone_clients from "../database/models/telefones.model.js";
+import Telefones_Clients from "../database/models/telefones.model.js";
 import { Op } from "sequelize";
 
 const getAll = async (req, res, next) => {
