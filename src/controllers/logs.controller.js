@@ -9,7 +9,7 @@ const getAll = async (req, res, next) => {
   try {
     const { page, paginate } = req.query;
 
-    // console.log(page, paginate);
+    console.log({page, paginate});
 
     res.status(400);
     TableLogs.associate([TableDatabase]);
@@ -17,9 +17,11 @@ const getAll = async (req, res, next) => {
     const data = await Models.getAll({
       model: ViewLogs,
       sort: [["name_default", "asc"]],
-      // page,
-      // paginate: paginate || 999999,
+      page,
+      paginate: paginate || 999999,
     });
+
+    console.log({data});
 
     res.status(!data ? 404 : 200);
     res.send(data || "Nenhum Log foi encontrado!");
